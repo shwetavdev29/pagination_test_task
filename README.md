@@ -14,3 +14,5 @@ To run the program use command like this (5, 10, 2, 1 are arguments here):
   
 To run test cases use this command:
   `python3 test_task_unit_test.py`
+
+Both files should be in same directory.
