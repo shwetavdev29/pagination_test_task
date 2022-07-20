@@ -3,6 +3,7 @@ import argparse
 
 def argument_validator(func_name):
     def validate_args(total_pages, current_page, around, boundaries):
+        # Validates arguments and call the "get_footer_pagination" function along with them.
         values = [total_pages, current_page, around, boundaries]
         for value in values:
             if type(value) is not int:
@@ -29,7 +30,8 @@ def get_footer_pagination(total_pages, current_page, around, boundaries):
         pages_from_end = []
     else:
         pages_from_start = [*range(1, boundaries + 1)]
-        pages_from_end = [*range(total_pages - boundaries + 1, total_pages + 1)]
+        pages_from_end = [
+            *range(total_pages - boundaries + 1, total_pages + 1)]
 
     lower_end_around = 1 if current_page - around <= 1 else current_page - around
     higher_end_around = total_pages + 1 if (current_page + around + 1 >
@@ -46,7 +48,7 @@ def get_footer_pagination(total_pages, current_page, around, boundaries):
 
     # Add pages from end list which are smaller than current_page - around to
     # current_and_around
-    for page in pages_from_end:
+    for page in reversed(pages_from_end):
         if page < current_and_around[0] and page >= 1:
             current_and_around.insert(0, page)
 
@@ -81,7 +83,7 @@ def get_footer_pagination(total_pages, current_page, around, boundaries):
         ]
 
     # Insert '...' where necessary
-    if not pages_from_start and current_and_around[0] > 2:
+    if not pages_from_start and current_and_around[0] > 1:
         current_and_around.insert(0, '...')
     elif pages_from_start and current_and_around[0] > pages_from_start[-1] + 1:
         current_and_around.insert(0, '...')
@@ -98,11 +100,16 @@ def get_footer_pagination(total_pages, current_page, around, boundaries):
 
 
 if __name__ == "__main__":
+    # Take arguments from command line.
     parser = argparse.ArgumentParser()
-    parser.add_argument("--current_page", help="Current Page Number", required=True, type=int)
-    parser.add_argument("--total_pages", help="Total Page Number", required=True, type=int)
-    parser.add_argument("--boundaries", help="Boundaries Number", required=True, type=int)
-    parser.add_argument("--around", help="Around Number", required=True, type=int)
+    parser.add_argument(
+        "--current_page", help="Current Page Number", required=True, type=int)
+    parser.add_argument(
+        "--total_pages", help="Total Page Number", required=True, type=int)
+    parser.add_argument(
+        "--boundaries", help="Boundaries Number", required=True, type=int)
+    parser.add_argument("--around", help="Around Number",
+                        required=True, type=int)
 
     args = parser.parse_args()
 
